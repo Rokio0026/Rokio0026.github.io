@@ -82,20 +82,27 @@
   </div>
 
   <script>
-    function checkAnswer(num, correct) {
-      const userInput = document.getElementById(`answer${num}`).value.trim().toUpperCase();
-      const result = document.getElementById(`result${num}`);
-      if (userInput === correct.toUpperCase()) {
-        result.textContent = '✅ ¡Correcto!';
-        document.getElementById(`puzzle${num + 1}`)?.classList.remove('hidden');
-        if (num === 3) {
-          document.getElementById('final').classList.remove('hidden');
-        }
+   function checkAnswer(num, correct) {
+    const userInput = document.getElementById(`answer${num}`).value.trim().toUpperCase();
+    const result = document.getElementById(`result${num}`);
+
+    if (userInput === correct.toUpperCase()) {
+      result.textContent = 'vale bien';
+
+      // Oculta el puzzle actual
+      document.getElementById(`puzzle${num}`).classList.add('hidden');
+
+      // Muestra el siguiente puzzle o el final
+      if (num === 3) {
+        document.getElementById('final').classList.remove('hidden');
       } else {
-        result.textContent = '❌ Prueba otra vez';
+        document.getElementById(`puzzle${num + 1}`).classList.remove('hidden');
       }
+    } else {
+      result.textContent = 'prueba otra vez tonto';
     }
-  </script>
+  }
+</script>
 </body>
 </html>
 
