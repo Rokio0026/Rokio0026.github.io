@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Escape Room: La Web</title>
   <style>
     body {
@@ -15,13 +15,17 @@
     h1 {
       font-size: 2.5rem;
     }
-    .puzzle {
+    .screen {
       margin: 2rem auto;
       padding: 1.5rem;
       border: 2px dashed #00ff88;
       max-width: 600px;
       background-color: #1a1a1a;
       border-radius: 10px;
+      display: none;
+    }
+    .active {
+      display: block;
     }
     input[type="text"] {
       padding: 0.5rem;
@@ -37,79 +41,76 @@
       cursor: pointer;
       font-weight: bold;
     }
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
-  <div class="puzzle" id="intro1">
+
+  <h1>mis huevos morenos, honestamente</h1>
+
+  <div class="screen active" id="intro1">
     <h2>eh...</h2>
     <button onclick="goTo('intro1', 'intro2')">Siguiente</button>
   </div>
-  
-  <div class="puzzle hidden" id="intro2">
-    <h2> holi</h2>
+
+  <div class="screen" id="intro2">
+    <h2>holi</h2>
     <button onclick="goTo('intro2', 'intro3')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro3">
-    <h2> no se muy bien como ha pasado todo esto</h2>
+  <div class="screen" id="intro3">
+    <h2>no se muy bien como ha pasado todo esto</h2>
     <button onclick="goTo('intro3', 'intro4')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro4">
-    <h2> yo solo quería hacer algo graciosillo para el cum</h2>
-    <p> para que nos lo pasaramos bien todos, un rato.</p>
+  <div class="screen" id="intro4">
+    <h2>yo solo quería hacer algo graciosillo para el cum</h2>
+    <p>para que nos lo pasaramos bien todos, un rato.</p>
     <button onclick="goTo('intro4', 'intro5')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro5">
-    <p> un rato, un ratillo</p>
+  <div class="screen" id="intro5">
+    <p>un rato, un ratillo</p>
     <button onclick="goTo('intro5', 'intro6')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro6">
-    <p> un ratillo cortito, para pasarlo bien.</p>
+  <div class="screen" id="intro6">
+    <p>un ratillo cortito, para pasarlo bien.</p>
     <button onclick="goTo('intro6', 'intro7')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro7">
-    <h2> ... pero se me ha ido de las manos.</h2>
+  <div class="screen" id="intro7">
+    <h2>... pero se me ha ido de las manos.</h2>
     <button onclick="goTo('intro7', 'intro8')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro8">
-    <p> ahora aprende a programar, aprende a gastar photoshop, invierte tiempo, haz flexiones </p>
+  <div class="screen" id="intro8">
+    <p>ahora aprende a programar, aprende a gastar photoshop, invierte tiempo, haz flexiones</p>
     <button onclick="goTo('intro8', 'intro9')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro9">
-    <p> ahora dibuja, mira como funciona una página web, haz más flexiones... </p>
+  <div class="screen" id="intro9">
+    <p>ahora dibuja, mira como funciona una página web, haz más flexiones...</p>
     <button onclick="goTo('intro9', 'intro10')">Siguiente</button>
   </div>
 
-  <div class="puzzle hidden" id="intro10">
-    <h2> he acabado hasta los huevos </h2>
-    <p> hasta mis huevos morenos </p>
+  <div class="screen" id="intro10">
+    <h2>he acabado hasta los huevos</h2>
+    <p>hasta mis huevos morenos</p>
     <button onclick="goTo('intro10', 'puzzle1')">Comenzar</button>
   </div>
 
-  <h1> mis huevos morenos, honestamente </h1>
-
-  <div class="puzzle" id="puzzle1">
-    <h2>Este es un titulo de un tipo de puzzle</h2>
-    <p>Si muy gracioso pero comeme los huebos <br>
-      comeme los huebo gordos</p>
-    <p><em>(Pista: ninguna jodete)</em></p>
+  <div class="screen" id="puzzle1">
+    <h2>Este es un título de un tipo de puzzle</h2>
+    <p>Si muy gracioso pero cómeme los huebos <br> cómeme los huebo gordos</p>
+    <p><em>(Pista: ninguna jódete)</em></p>
     <input type="text" id="answer1" placeholder="Respuesta">
     <button onclick="checkAnswer(1, 'huevos')">Enviar</button>
     <p id="result1"></p>
   </div>
 
-  <div class="puzzle hidden" id="puzzle2">
-    <h2>esto que coño es</h2>
-    <p>no se hacer esto todavia tbh</p>
+  <div class="screen" id="puzzle2">
+    <h2>esto qué coño es</h2>
+    <p>no se hacer esto todavía tbh</p>
     <audio controls>
       <source src="tu-audio.mp3" type="audio/mp3">
       Tu navegador no soporta el audio.
@@ -119,42 +120,39 @@
     <p id="result2"></p>
   </div>
 
-  <div class="puzzle hidden" id="puzzle3">
+  <div class="screen" id="puzzle3">
     <h2>Puzzle 3: Imagen combinada</h2>
-    <p>Observa esta imagen. ¿Qué palabra se forma? esto se podria hacer mas interesante</p>
+    <p>Observa esta imagen. ¿Qué palabra se forma? esto se podría hacer más interesante</p>
     <img src="tu-imagen.jpg" alt="Pista visual" style="width:100%; max-width:400px">
     <input type="text" id="answer3" placeholder="Respuesta">
     <button onclick="checkAnswer(3, 'MORCILLA')">Enviar</button>
     <p id="result3"></p>
   </div>
 
-  <div class="puzzle hidden" id="final">
+  <div class="screen" id="final">
     <h2>¡Felicidades!</h2>
     <p>Has desbloqueado la ubicación final: <strong>📍 Parc del Cul Rodó</strong></p>
   </div>
 
   <script>
-   function checkAnswer(num, correct) {
-    const userInput = document.getElementById(`answer${num}`).value.trim().toUpperCase();
-    const result = document.getElementById(`result${num}`);
-
-    if (userInput === correct.toUpperCase()) {
-      result.textContent = 'vale bien';
-
-      // Oculta el puzzle actual
-      document.getElementById(`puzzle${num}`).classList.add('hidden');
-
-      // Muestra el siguiente puzzle o el final
-      if (num === 3) {
-        document.getElementById('final').classList.remove('hidden');
-      } else {
-        document.getElementById(`puzzle${num + 1}`).classList.remove('hidden');
-      }
-    } else {
-      result.textContent = 'prueba otra vez tonto';
+    function goTo(currentId, nextId) {
+      document.getElementById(currentId).classList.remove('active');
+      document.getElementById(currentId).classList.add('hidden');
+      document.getElementById(nextId).classList.remove('hidden');
+      document.getElementById(nextId).classList.add('active');
     }
-  }
-</script>
+
+    function checkAnswer(num, correct) {
+      const input = document.getElementById(`answer${num}`).value.trim().toUpperCase();
+      const result = document.getElementById(`result${num}`);
+
+      if (input === correct.toUpperCase()) {
+        result.textContent = '✅ vale bien';
+        goTo(`puzzle${num}`, num === 3 ? 'final' : `puzzle${num + 1}`);
+      } else {
+        result.textContent = '❌ prueba otra vez tonto';
+      }
+    }
+  </script>
 </body>
 </html>
-
