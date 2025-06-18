@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Room: La Web</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+    }
+    .puzzle {
+      margin: 2rem auto;
+      padding: 1.5rem;
+      border: 2px dashed #00ff88;
+      max-width: 600px;
+      background-color: #1a1a1a;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      width: 80%;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #00ff88;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Escape Room: Encuentra la Ubicación Secreta</h1>
+
+  <div class="puzzle" id="puzzle1">
+    <h2>Puzzle 1: El mensaje escondido</h2>
+    <p>Hay un mensaje oculto en esta frase:<br>
+      "Los Patos Aplauden Con Ortigas Por Orgullo"</p>
+    <p><em>(Pista: acrónimo)</em></p>
+    <input type="text" id="answer1" placeholder="Respuesta">
+    <button onclick="checkAnswer(1, 'PACOPO')">Enviar</button>
+    <p id="result1"></p>
+  </div>
+
+  <div class="puzzle hidden" id="puzzle2">
+    <h2>Puzzle 2: Sonido animal</h2>
+    <p>Escucha este sonido y escribe qué animal es:</p>
+    <audio controls>
+      <source src="tu-audio.mp3" type="audio/mp3">
+      Tu navegador no soporta el audio.
+    </audio>
+    <input type="text" id="answer2" placeholder="Respuesta">
+    <button onclick="checkAnswer(2, 'gaviota')">Enviar</button>
+    <p id="result2"></p>
+  </div>
+
+  <div class="puzzle hidden" id="puzzle3">
+    <h2>Puzzle 3: Imagen combinada</h2>
+    <p>Observa esta imagen. ¿Qué palabra se forma?</p>
+    <img src="tu-imagen.jpg" alt="Pista visual" style="width:100%; max-width:400px">
+    <input type="text" id="answer3" placeholder="Respuesta">
+    <button onclick="checkAnswer(3, 'MORCILLA')">Enviar</button>
+    <p id="result3"></p>
+  </div>
+
+  <div class="puzzle hidden" id="final">
+    <h2>¡Felicidades!</h2>
+    <p>Has desbloqueado la ubicación final: <strong>📍 Parc del Cul Rodó</strong></p>
+  </div>
+
+  <script>
+    function checkAnswer(num, correct) {
+      const userInput = document.getElementById(`answer${num}`).value.trim().toUpperCase();
+      const result = document.getElementById(`result${num}`);
+      if (userInput === correct.toUpperCase()) {
+        result.textContent = '✅ ¡Correcto!';
+        document.getElementById(`puzzle${num + 1}`)?.classList.remove('hidden');
+        if (num === 3) {
+          document.getElementById('final').classList.remove('hidden');
+        }
+      } else {
+        result.textContent = '❌ Prueba otra vez';
+      }
+    }
+  </script>
+</body>
+</html>
+
