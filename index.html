@@ -2,81 +2,90 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Puzzle RGB Multiopción</title>
+  <title>Puzzle RGB Rokio</title>
   <style>
     body {
-      background-color: #111;
+      background-color: #00ffff; /* color inicial: cian */
       color: white;
-      font-family: sans-serif;
+      font-family: monospace;
       text-align: center;
+      margin: 0;
+      padding: 2em;
     }
     canvas {
       margin-top: 20px;
       border: 2px solid white;
     }
-    button, input[type='color'] {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
+    input[type="color"] {
+      margin-top: 10px;
+      padding: 8px;
+    }
+    .pista {
+      font-style: italic;
+      margin-bottom: 20px;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
   <h1>¿Cuál es la serie favorita de Rokio?</h1>
-  <p>Elige un color de fondo y aplica filtros RGB. Solo una opción se revela correctamente.</p>
+  <p class="pista">"Solo cuando el océano refleja la razón se revela la verdad."</p>
 
-  <input type="color" id="bgPicker" value="#ff00ff" />
-  <button onclick="setBackground()">Cambiar Fondo</button><br/>
-  <button onclick="applyFilter('r')">Luz Roja</button>
-  <button onclick="applyFilter('g')">Luz Verde</button>
-  <button onclick="applyFilter('b')">Luz Azul</button>
-  <button onclick="resetImage()">Sin Filtro</button>
+  <label for="bgPicker">Cambia el color de fondo:</label>
+  <input type="color" id="bgPicker" value="#00ffff" onchange="setBackground()" />
 
-  <canvas id="puzzleCanvas" width="800" height="300"></canvas>
+  <canvas id="puzzleCanvas" width="900" height="300"></canvas>
 
   <script>
     const canvas = document.getElementById("puzzleCanvas");
     const ctx = canvas.getContext("2d");
 
     const bgPicker = document.getElementById("bgPicker");
-    let bgColor = bgPicker.value;
 
-    // Trozos de las opciones, alternando colores RGB
     const options = [
-      { text: "SMILING FRIENDS", x: 10, y: 20 },
-      { text: "HORA DE AVENTURAS", x: 10, y: 80 },
-      { text: "HOUSE", x: 10, y: 140 },
-      { text: "SOUTH PARK", x: 10, y: 200 },
-      { text: "FARGO", x: 400, y: 20 },
-      { text: "MORAL OREL", x: 400, y: 80 }, // correcta
+      { text: "SMILING FRIENDS", x: 20, y: 50 },
+      { text: "HORA DE AVENTURAS", x: 20, y: 100 },
+      { text: "HOUSE", x: 20, y: 150 },
+      { text: "SOUTH PARK", x: 20, y: 200 },
+      { text: "FARGO", x: 500, y: 50 },
+      { text: "MORAL OREL", x: 500, y: 100 } // correcta
     ];
 
-    const colors = [
-      [255, 0, 0],   // rojo
-      [0, 255, 0],   // verde
-      [0, 0, 255]    // azul
-    ];
+    // La opción correcta estará compuesta solo de verde y azul → visible en fondo cian
+    const correctColors = ["g", "b"];
+    const wrongColors = ["r", "g", "b"];
 
-    // Dibujar opciones troceadas
-    function drawPuzzle() {
+    function drawPuzzle(bgColor) {
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = "20px monospace";
+
+      ctx.font = "22px monospace";
 
       for (const opt of options) {
+        const isCorrect = opt.text === "MORAL OREL";
+        const colorSeq = isCorrect ? correctColors : wrongColors;
+
         for (let i = 0; i < opt.text.length; i++) {
-          const [r, g, b] = colors[i % 3];
-          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          const colorCode = colorSeq[i % colorSeq.length];
+          let color;
+          if (colorCode === "r") color = "rgb(255,0,0)";
+          if (colorCode === "g") color = "rgb(0,255,0)";
+          if (colorCode === "b") color = "rgb(0,0,255)";
+          ctx.fillStyle = color;
           ctx.fillText(opt.text[i], opt.x + i * 18, opt.y);
         }
       }
 
-      // Distracción con símbolos
+      // Distracción visual
       const symbols = ["#", "*", "$", "@", "%", "&"];
-      for (let i = 0; i < 200; i++) {
+      for (let i = 0; i < 100; i++) {
         const sym = symbols[Math.floor(Math.random() * symbols.length)];
-        const [r, g, b] = colors[Math.floor(Math.random() * 3)];
-        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        const colorCode = wrongColors[Math.floor(Math.random() * 3)];
+        let color;
+        if (colorCode === "r") color = "rgb(255,0,0)";
+        if (colorCode === "g") color = "rgb(0,255,0)";
+        if (colorCode === "b") color = "rgb(0,0,255)";
+        ctx.fillStyle = color;
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
         ctx.fillText(sym, x, y);
@@ -84,36 +93,13 @@
     }
 
     function setBackground() {
-      bgColor = bgPicker.value;
-      drawPuzzle();
+      const bgColor = bgPicker.value;
+      document.body.style.backgroundColor = bgColor;
+      drawPuzzle(bgColor);
     }
 
-    function resetImage() {
-      drawPuzzle();
-    }
-
-    function applyFilter(channel) {
-      drawPuzzle();
-      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      let data = imageData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        if (channel === 'r') {
-          data[i + 1] = 0;
-          data[i + 2] = 0;
-        } else if (channel === 'g') {
-          data[i] = 0;
-          data[i + 2] = 0;
-        } else if (channel === 'b') {
-          data[i] = 0;
-          data[i + 1] = 0;
-        }
-      }
-      ctx.putImageData(imageData, 0, 0);
-    }
-
-    // Inicializar
-    drawPuzzle();
+    // Inicial
+    drawPuzzle(bgPicker.value);
   </script>
 </body>
 </html>
