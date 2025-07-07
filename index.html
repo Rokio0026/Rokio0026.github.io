@@ -1,150 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Escape Room: La Web</title>
+  <meta charset="UTF-8">
+  <title>Puzle RGB - Tutorial</title>
   <style>
     body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #0d0d0d;
-      color: #f0f0f0;
-      text-align: center;
-      padding: 2rem;
+      background: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
     h1 {
-      font-size: 2.5rem;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
-    .screen {
-      margin: 2rem auto;
-      padding: 1.5rem;
-      border: 2px dashed #00ff88;
-      max-width: 600px;
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      display: none;
+    canvas {
+      border: 1px solid #ccc;
+      image-rendering: pixelated;
     }
-    .active {
-      display: block;
-    }
-    input[type="text"] {
-      padding: 0.5rem;
-      margin-top: 1rem;
-      width: 80%;
+    .controls {
+      margin-top: 15px;
     }
     button {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      background-color: #00ff88;
-      color: #000;
+      margin: 0 5px;
+      padding: 6px 12px;
       border: none;
+      border-radius: 4px;
+      background: #eee;
       cursor: pointer;
+    }
+    button.active {
+      background: #000;
+      color: #fff;
+    }
+    #message {
+      margin-top: 15px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-  <h1>mis huevos morenos, honestamente</h1>
-
-  <div class="screen active" id="intro1">
-    <h2>eh...</h2>
-    <button onclick="goTo('intro1', 'intro2')">Siguiente</button>
+  <h1>Tutorial: Filtros de color RGB</h1>
+  <canvas id="panel" width="250" height="250"></canvas>
+  <div class="controls">
+    <button id="r" class="active">R</button>
+    <button id="g" class="active">G</button>
+    <button id="b" class="active">B</button>
   </div>
-
-  <div class="screen" id="intro2">
-    <h2>holi</h2>
-    <button onclick="goTo('intro2', 'intro3')">Siguiente</button>
-  </div>
-
-  <div class="screen" id="intro3">
-    <h2>no se muy bien como ha pasado todo esto</h2>
-    <button onclick="goTo('intro3', 'intro4')">Siguiente</button>
-  </div>
-
-  <div class="screen" id="intro4">
-    <h2>yo solo quería hacer algo graciosillo para el cum</h2>
-    <p>para que nos lo pasaramos bien todos, un rato.</p>
-    <button onclick="goTo('intro4', 'intro5')">Siguiente</button>
-  </div>
-
-  <div class="screen" id="intro5">
-    <h2>un rato, un ratillo</h2>
-    <p>un ratillo cortito, para pasarlo bien.</p>
-    <button onclick="goTo('intro5', 'intro6')">Siguiente</button>
-  </div>
-
-  <div class="screen" id="intro6">
-    <h2>... pero se me ha ido de las manos.</h2>
-    <p>ahora aprende a programar, aprende a gastar photoshop, invierte tiempo, haz flexiones</p>
-    <button onclick="goTo('intro6', 'intro7')">Siguiente</button>
-  </div>
-
-  <div class="screen" id="intro7">
-    <p>ahora dibuja, mira como funciona una página web, haz más flexiones...</p>
-    <button onclick="goTo('intro7', 'intro8')">Siguiente</button>
-  </div>
-
-  <div class="screen" id="intro8">
-    <h2>he acabado hasta los huevos</h2>
-    <p>hasta mis huevos morenos</p>
-    <button onclick="goTo('intro8', 'puzzle1')">Comenzar</button>
-  </div>
-
-  <div class="screen" id="puzzle1">
-    <h2>Este es un título de un tipo de puzzle</h2>
-    <p>Si muy gracioso pero cómeme los huebos <br> cómeme los huebo gordos</p>
-    <p><em>(Pista: ninguna jódete)</em></p>
-    <input type="text" id="answer1" placeholder="Respuesta">
-    <button onclick="checkAnswer(1, 'huevos')">Enviar</button>
-    <p id="result1"></p>
-  </div>
-
-  <div class="screen" id="puzzle2">
-    <h2>esto qué coño es</h2>
-    <p>no se hacer esto todavía tbh</p>
-    <audio controls>
-      <source src="tu-audio.mp3" type="audio/mp3">
-      Tu navegador no soporta el audio.
-    </audio>
-    <input type="text" id="answer2" placeholder="Respuesta">
-    <button onclick="checkAnswer(2, 'una especie de verdad')">Enviar</button>
-    <p id="result2"></p>
-  </div>
-
-  <div class="screen" id="puzzle3">
-    <h2>Puzzle 3: Imagen combinada</h2>
-    <p>Observa esta imagen. ¿Qué palabra se forma? esto se podría hacer más interesante</p>
-    <img src="tu-imagen.jpg" alt="Pista visual" style="width:100%; max-width:400px">
-    <input type="text" id="answer3" placeholder="Respuesta">
-    <button onclick="checkAnswer(3, 'MORCILLA')">Enviar</button>
-    <p id="result3"></p>
-  </div>
-
-  <div class="screen" id="final">
-    <h2>¡Felicidades!</h2>
-    <p>Has desbloqueado la ubicación final: <strong>📍 Parc del Cul Rodó</strong></p>
-  </div>
-
+  <div id="message"></div>
+  
   <script>
-    function goTo(currentId, nextId) {
-      document.getElementById(currentId).classList.remove('active');
-      document.getElementById(currentId).classList.add('hidden');
-      document.getElementById(nextId).classList.remove('hidden');
-      document.getElementById(nextId).classList.add('active');
-    }
+    const canvas = document.getElementById('panel');
+    const ctx = canvas.getContext('2d');
+    const size = 5;
+    const cellSize = 50;
+    const path = [ [0,0], [1,0], [2,0], [2,1], [2,2], [3,2], [4,2], [4,3], [4,4] ];
 
-    function checkAnswer(num, correct) {
-      const input = document.getElementById(`answer${num}`).value.trim().toUpperCase();
-      const result = document.getElementById(`result${num}`);
+    const grid = [];
+    const filters = { r: true, g: true, b: true };
 
-      if (input === correct.toUpperCase()) {
-        result.textContent = '✅ vale bien';
-        goTo(`puzzle${num}`, num === 3 ? 'final' : `puzzle${num + 1}`);
-      } else {
-        result.textContent = '❌ prueba otra vez tonto';
+    // Generar grid con mezcla de colores
+    for (let y = 0; y < size; y++) {
+      grid[y] = [];
+      for (let x = 0; x < size; x++) {
+        const inPath = path.some(([px, py]) => px === x && py === y);
+        if (inPath) {
+          // Color visible con filtros adecuados
+          const color = [255, 0, 255]; // Magenta: rojo + azul
+          grid[y][x] = color;
+        } else {
+          const r = Math.random() < 0.5 ? 255 : 0;
+          const g = Math.random() < 0.5 ? 255 : 0;
+          const b = Math.random() < 0.5 ? 255 : 0;
+          grid[y][x] = [r, g, b];
+        }
       }
     }
+
+    function applyFilters(color) {
+      return [
+        filters.r ? color[0] : 0,
+        filters.g ? color[1] : 0,
+        filters.b ? color[2] : 0
+      ];
+    }
+
+    function draw() {
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const filtered = applyFilters(grid[y][x]);
+          ctx.fillStyle = `rgb(${filtered[0]},${filtered[1]},${filtered[2]})`;
+          ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    function checkVictory() {
+      const currentColor = applyFilters([255,0,255]);
+      if (currentColor[0] === 255 && currentColor[1] === 0 && currentColor[2] === 255) {
+        document.getElementById('message').innerText = "¡Correcto! Has revelado el camino magenta.";
+      } else {
+        document.getElementById('message').innerText = "Activa los filtros correctos para ver el camino.";
+      }
+    }
+
+    draw();
+    checkVictory();
+
+    document.getElementById('r').addEventListener('click', () => {
+      filters.r = !filters.r;
+      document.getElementById('r').classList.toggle('active');
+      draw();
+      checkVictory();
+    });
+    document.getElementById('g').addEventListener('click', () => {
+      filters.g = !filters.g;
+      document.getElementById('g').classList.toggle('active');
+      draw();
+      checkVictory();
+    });
+    document.getElementById('b').addEventListener('click', () => {
+      filters.b = !filters.b;
+      document.getElementById('b').classList.toggle('active');
+      draw();
+      checkVictory();
+    });
   </script>
 </body>
 </html>
