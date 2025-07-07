@@ -1,105 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Puzzle RGB Rokio</title>
-  <style>
-    body {
-      background-color: #00ffff; /* color inicial: cian */
-      color: white;
-      font-family: monospace;
-      text-align: center;
-      margin: 0;
-      padding: 2em;
-    }
-    canvas {
-      margin-top: 20px;
-      border: 2px solid white;
-    }
-    input[type="color"] {
-      margin-top: 10px;
-      padding: 8px;
-    }
-    .pista {
-      font-style: italic;
-      margin-bottom: 20px;
-      color: #ccc;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Puzzle Mega Difícil</title>
+<style>
+  body {
+    background-color: #000000;
+    font-family: monospace;
+    color: white;
+    text-align: center;
+    padding: 2em;
+  }
+  canvas {
+    border: 2px solid white;
+    margin-top: 20px;
+  }
+  #colorPicker {
+    margin-top: 20px;
+    padding: 8px;
+  }
+  .pista {
+    font-style: italic;
+    color: #ccc;
+    margin-bottom: 20px;
+  }
+</style>
 </head>
 <body>
-  <h1>¿Cuál es la serie favorita de Rokio?</h1>
-  <p class="pista">"Solo cuando el océano refleja la razón se revela la verdad."</p>
 
-  <label for="bgPicker">Cambia el color de fondo:</label>
-  <input type="color" id="bgPicker" value="#00ffff" onchange="setBackground()" />
+<h1>¿Cuál es la serie favorita de Rokio?</h1>
+<p class="pista">"Solo la luz correcta revelará el secreto."</p>
 
-  <canvas id="puzzleCanvas" width="900" height="300"></canvas>
+<label for="colorPicker">Elige el color de fondo:</label>
+<input type="color" id="colorPicker" value="#000000" />
 
-  <script>
-    const canvas = document.getElementById("puzzleCanvas");
-    const ctx = canvas.getContext("2d");
+<canvas id="canvas" width="900" height="300"></canvas>
 
-    const bgPicker = document.getElementById("bgPicker");
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const colorPicker = document.getElementById("colorPicker");
 
-    const options = [
-      { text: "SMILING FRIENDS", x: 20, y: 50 },
-      { text: "HORA DE AVENTURAS", x: 20, y: 100 },
-      { text: "HOUSE", x: 20, y: 150 },
-      { text: "SOUTH PARK", x: 20, y: 200 },
-      { text: "FARGO", x: 500, y: 50 },
-      { text: "MORAL OREL", x: 500, y: 100 } // correcta
-    ];
+const options = [
+  { text: "SMILING FRIENDS", x: 20, y: 60, colorPattern: ['r','g','b','r','g','b','r','g','b','r','g','b','r','g','b'] },
+  { text: "HORA DE AVENTURAS", x: 20, y: 110, colorPattern: ['b','r','g','b','r','g','b','r','g','b','r','g','b','r','g','b','r','g'] },
+  { text: "HOUSE", x: 20, y: 160, colorPattern: ['g','b','r','g','b'] },
+  { text: "SOUTH PARK", x: 20, y: 210, colorPattern: ['r','b','g','r','b','g','r','b','g','r'] },
+  { text: "FARGO", x: 500, y: 60, colorPattern: ['b','g','r','b','g'] },
+  // Esta es la correcta: combinación diseñada para volverse brillante con un fondo específico
+  { text: "MORAL OREL", x: 500, y: 110, colorPattern: ['g','b','g','b','g','b','g','b','g','b'] }
+];
 
-    // La opción correcta estará compuesta solo de verde y azul → visible en fondo cian
-    const correctColors = ["g", "b"];
-    const wrongColors = ["r", "g", "b"];
+// Función para obtener rgb desde código 'r','g','b'
+function getRGB(colorCode) {
+  switch(colorCode) {
+    case 'r': return [255,0,0];
+    case 'g': return [0,255,0];
+    case 'b': return [0,0,255];
+    default: return [255,255,255];
+  }
+}
 
-    function drawPuzzle(bgColor) {
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+// Mezcla aditiva simple para saber contraste
+// Retorna el brillo resultante de sumar el fondo y la letra (simplificado)
+function additiveMix(bg, fg) {
+  // Normalizamos a 0..1
+  let r = Math.min(1, bg[0]/255 + fg[0]/255);
+  let g = Math.min(1, bg[1]/255 + fg[1]/255);
+  let b = Math.min(1, bg[2]/255 + fg[2]/255);
+  // brillo simple como media
+  return (r + g + b) / 3;
+}
 
-      ctx.font = "22px monospace";
+function draw() {
+  const bgColor = colorPicker.value;
+  document.body.style.backgroundColor = bgColor;
 
-      for (const opt of options) {
-        const isCorrect = opt.text === "MORAL OREL";
-        const colorSeq = isCorrect ? correctColors : wrongColors;
+  // convertir bg hex a rgb array
+  const bgRGB = hexToRgb(bgColor);
 
-        for (let i = 0; i < opt.text.length; i++) {
-          const colorCode = colorSeq[i % colorSeq.length];
-          let color;
-          if (colorCode === "r") color = "rgb(255,0,0)";
-          if (colorCode === "g") color = "rgb(0,255,0)";
-          if (colorCode === "b") color = "rgb(0,0,255)";
-          ctx.fillStyle = color;
-          ctx.fillText(opt.text[i], opt.x + i * 18, opt.y);
-        }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = "22px monospace";
+  ctx.textBaseline = "middle";
+
+  for(const opt of options) {
+    for(let i=0; i < opt.text.length; i++) {
+      const letter = opt.text[i];
+      const colorCode = opt.colorPattern[i % opt.colorPattern.length];
+      const fgRGB = getRGB(colorCode);
+      const brightness = additiveMix(bgRGB, fgRGB);
+
+      // Para que solo la opción correcta se vea clara cuando la mezcla es alta,
+      // hacemos que la opacidad sea proporcional al brillo. Así letras “se revelan”
+      // en función del fondo y el color del texto.
+      let alpha = 0;
+      if (opt.text === "MORAL OREL") {
+        // opción correcta: opacidad proporcional al brillo (se ve con fondo adecuado)
+        alpha = brightness;
+      } else {
+        // opciones incorrectas, letras casi invisibles (opacidad muy baja) incluso con fondo blanco
+        alpha = brightness > 0.6 ? 0.1 : brightness * 0.2;
       }
 
-      // Distracción visual
-      const symbols = ["#", "*", "$", "@", "%", "&"];
-      for (let i = 0; i < 100; i++) {
-        const sym = symbols[Math.floor(Math.random() * symbols.length)];
-        const colorCode = wrongColors[Math.floor(Math.random() * 3)];
-        let color;
-        if (colorCode === "r") color = "rgb(255,0,0)";
-        if (colorCode === "g") color = "rgb(0,255,0)";
-        if (colorCode === "b") color = "rgb(0,0,255)";
-        ctx.fillStyle = color;
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        ctx.fillText(sym, x, y);
-      }
+      ctx.fillStyle = `rgba(${fgRGB[0]},${fgRGB[1]},${fgRGB[2]},${alpha})`;
+      ctx.fillText(letter, opt.x + i * 18, opt.y);
     }
+  }
+}
 
-    function setBackground() {
-      const bgColor = bgPicker.value;
-      document.body.style.backgroundColor = bgColor;
-      drawPuzzle(bgColor);
-    }
+// Convierte hex #RRGGBB a [R,G,B]
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+  ] : [0,0,0];
+}
 
-    // Inicial
-    drawPuzzle(bgPicker.value);
-  </script>
+colorPicker.addEventListener("input", draw);
+
+// Dibujar inicial
+draw();
+</script>
+
 </body>
 </html>
