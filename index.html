@@ -2,133 +2,118 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Puzle RGB - Tutorial</title>
+  <title>Puzzle RGB Multiopción</title>
   <style>
     body {
-      background: #fff;
+      background-color: #111;
+      color: white;
       font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
+      text-align: center;
     }
     canvas {
-      border: 1px solid #ccc;
-      image-rendering: pixelated;
+      margin-top: 20px;
+      border: 2px solid white;
     }
-    .controls {
-      margin-top: 15px;
-    }
-    button {
-      margin: 0 5px;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 4px;
-      background: #eee;
-      cursor: pointer;
-    }
-    button.active {
-      background: #000;
-      color: #fff;
-    }
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
+    button, input[type='color'] {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <h1>Tutorial: Filtros de color RGB</h1>
-  <canvas id="panel" width="250" height="250"></canvas>
-  <div class="controls">
-    <button id="r" class="active">R</button>
-    <button id="g" class="active">G</button>
-    <button id="b" class="active">B</button>
-  </div>
-  <div id="message"></div>
-  
+  <h1>¿Cuál es la serie favorita de Rokio?</h1>
+  <p>Elige un color de fondo y aplica filtros RGB. Solo una opción se revela correctamente.</p>
+
+  <input type="color" id="bgPicker" value="#ff00ff" />
+  <button onclick="setBackground()">Cambiar Fondo</button><br/>
+  <button onclick="applyFilter('r')">Luz Roja</button>
+  <button onclick="applyFilter('g')">Luz Verde</button>
+  <button onclick="applyFilter('b')">Luz Azul</button>
+  <button onclick="resetImage()">Sin Filtro</button>
+
+  <canvas id="puzzleCanvas" width="800" height="300"></canvas>
+
   <script>
-    const canvas = document.getElementById('panel');
-    const ctx = canvas.getContext('2d');
-    const size = 5;
-    const cellSize = 50;
-    const path = [ [0,0], [1,0], [2,0], [2,1], [2,2], [3,2], [4,2], [4,3], [4,4] ];
+    const canvas = document.getElementById("puzzleCanvas");
+    const ctx = canvas.getContext("2d");
 
-    const grid = [];
-    const filters = { r: true, g: true, b: true };
+    const bgPicker = document.getElementById("bgPicker");
+    let bgColor = bgPicker.value;
 
-    // Generar grid con mezcla de colores
-    for (let y = 0; y < size; y++) {
-      grid[y] = [];
-      for (let x = 0; x < size; x++) {
-        const inPath = path.some(([px, py]) => px === x && py === y);
-        if (inPath) {
-          // Color visible con filtros adecuados
-          const color = [255, 0, 255]; // Magenta: rojo + azul
-          grid[y][x] = color;
-        } else {
-          const r = Math.random() < 0.5 ? 255 : 0;
-          const g = Math.random() < 0.5 ? 255 : 0;
-          const b = Math.random() < 0.5 ? 255 : 0;
-          grid[y][x] = [r, g, b];
+    // Trozos de las opciones, alternando colores RGB
+    const options = [
+      { text: "SMILING FRIENDS", x: 10, y: 20 },
+      { text: "HORA DE AVENTURAS", x: 10, y: 80 },
+      { text: "HOUSE", x: 10, y: 140 },
+      { text: "SOUTH PARK", x: 10, y: 200 },
+      { text: "FARGO", x: 400, y: 20 },
+      { text: "MORAL OREL", x: 400, y: 80 }, // correcta
+    ];
+
+    const colors = [
+      [255, 0, 0],   // rojo
+      [0, 255, 0],   // verde
+      [0, 0, 255]    // azul
+    ];
+
+    // Dibujar opciones troceadas
+    function drawPuzzle() {
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "20px monospace";
+
+      for (const opt of options) {
+        for (let i = 0; i < opt.text.length; i++) {
+          const [r, g, b] = colors[i % 3];
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillText(opt.text[i], opt.x + i * 18, opt.y);
         }
       }
+
+      // Distracción con símbolos
+      const symbols = ["#", "*", "$", "@", "%", "&"];
+      for (let i = 0; i < 200; i++) {
+        const sym = symbols[Math.floor(Math.random() * symbols.length)];
+        const [r, g, b] = colors[Math.floor(Math.random() * 3)];
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        ctx.fillText(sym, x, y);
+      }
     }
 
-    function applyFilters(color) {
-      return [
-        filters.r ? color[0] : 0,
-        filters.g ? color[1] : 0,
-        filters.b ? color[2] : 0
-      ];
+    function setBackground() {
+      bgColor = bgPicker.value;
+      drawPuzzle();
     }
 
-    function draw() {
-      for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-          const filtered = applyFilters(grid[y][x]);
-          ctx.fillStyle = `rgb(${filtered[0]},${filtered[1]},${filtered[2]})`;
-          ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+    function resetImage() {
+      drawPuzzle();
+    }
+
+    function applyFilter(channel) {
+      drawPuzzle();
+      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        if (channel === 'r') {
+          data[i + 1] = 0;
+          data[i + 2] = 0;
+        } else if (channel === 'g') {
+          data[i] = 0;
+          data[i + 2] = 0;
+        } else if (channel === 'b') {
+          data[i] = 0;
+          data[i + 1] = 0;
         }
       }
+      ctx.putImageData(imageData, 0, 0);
     }
 
-    function checkVictory() {
-      const currentColor = applyFilters([255,0,255]);
-      if (currentColor[0] === 255 && currentColor[1] === 0 && currentColor[2] === 255) {
-        document.getElementById('message').innerText = "¡Correcto! Has revelado el camino magenta.";
-      } else {
-        document.getElementById('message').innerText = "Activa los filtros correctos para ver el camino.";
-      }
-    }
-
-    draw();
-    checkVictory();
-
-    document.getElementById('r').addEventListener('click', () => {
-      filters.r = !filters.r;
-      document.getElementById('r').classList.toggle('active');
-      draw();
-      checkVictory();
-    });
-    document.getElementById('g').addEventListener('click', () => {
-      filters.g = !filters.g;
-      document.getElementById('g').classList.toggle('active');
-      draw();
-      checkVictory();
-    });
-    document.getElementById('b').addEventListener('click', () => {
-      filters.b = !filters.b;
-      document.getElementById('b').classList.toggle('active');
-      draw();
-      checkVictory();
-    });
+    // Inicializar
+    drawPuzzle();
   </script>
 </body>
 </html>
