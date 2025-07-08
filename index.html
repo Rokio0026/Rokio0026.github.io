@@ -51,7 +51,7 @@
     }
 
     .color-red { background-color: red; }
-    .color-green { background-color: rgb(0, 255, 0); }
+    .color-green { background-color: rgb(0, 255, 0); color: black; }
     .color-blue { background-color: blue; }
     .color-yellow { background-color: yellow; color: black; }
     .color-magenta { background-color: magenta; }
@@ -101,7 +101,7 @@
   <div id="intro-screen">
     <h1>ehhh hola.</h1>
     <p>Equipo rojo, no?. Te tengo listos unos puzles recien salidos del horno que me dan hasta hambre</p>
-        <p>Nada de trampas eh? bueno si las haces dimelo me da curiosidad</p>
+        <p>Nada de trampas eh? bueno si las haces dime cooomo</p>
     <button class="btn" onclick="startPuzzle()">Comenzar</button>
   </div>
 
@@ -142,9 +142,18 @@
       document.getElementById("puzzle1-screen").classList.remove("hidden");
     }
 
-    function setBgColor(color) {
-      document.getElementById("image-container").style.backgroundColor = color;
+     function setBgColor(color) {
+      const colors = {
+        red: 'rgb(255,0,0)',
+        green: 'rgb(0,255,0)',
+        blue: 'rgb(0,0,255)',
+        yellow: 'rgb(255,255,0)',
+        magenta: 'rgb(255,0,255)',
+        cyan: 'rgb(0,255,255)'
+       };
+      document.getElementById("image-container").style.backgroundColor = colors[color];
     }
+
 
     function checkCode() {
       const input = document.getElementById("code-input");
@@ -153,20 +162,32 @@
 
       const correctCode = "1234"; // <-- CAMBIA este valor por el código real
 
-      if (input.value === correctCode) {
+        if (input.value === correctCode) {
         input.style.borderColor = "limegreen";
         error.style.display = "none";
         nextButton.classList.remove("hidden");
+        nextButton.style.border = "2px solid limegreen";
       } else {
         input.style.borderColor = "red";
         error.style.display = "block";
         nextButton.classList.add("hidden");
+        nextButton.style.border = "none";
       }
     }
 
     function goToNext() {
       document.getElementById("puzzle1-screen").classList.add("hidden");
       document.getElementById("puzzle2-screen").classList.remove("hidden");
+   }
+
+    function goBack() {
+      if (!document.getElementById("puzzle2-screen").classList.contains("hidden")) {
+        document.getElementById("puzzle2-screen").classList.add("hidden");
+        document.getElementById("puzzle1-screen").classList.remove("hidden");
+      } else if (!document.getElementById("puzzle1-screen").classList.contains("hidden")) {
+        document.getElementById("puzzle1-screen").classList.add("hidden");
+        document.getElementById("intro-screen").classList.remove("hidden");
+      }
     }
   </script>
 
