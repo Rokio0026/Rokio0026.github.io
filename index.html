@@ -96,9 +96,6 @@
     }
   </style>
 </head>
-<!-- El mismo <head> y <style> que tú tenías, sin cambios importantes -->
-<!-- Aquí va directamente el <body> corregido -->
-
 <body>
 
   <!-- Pantalla de introducción -->
@@ -109,9 +106,10 @@
     <button class="btn" onclick="startPuzzle()">Comenzar</button>
   </div>
 
-  <!-- PUZZLE 1 -->
+  <!-- Primera prueba -->
   <div id="puzzle1-screen" class="hidden">
     <h2>Dadle al cerebrooo</h2>
+
     <div class="color-buttons">
       <button class="color-btn color-red" onclick="setBgColor('red')">Hosti</button>
       <button class="color-btn color-green" onclick="setBgColor('green')">puedo</button>
@@ -120,18 +118,22 @@
       <button class="color-btn color-magenta" onclick="setBgColor('magenta')">de</button>
       <button class="color-btn color-cyan" onclick="setBgColor('cyan')">esto</button>
     </div>
+
     <div class="image-container" id="image-container-1">
       <img src="Puzzle_1.png" alt="Imagen del primer puzle" class="blend-img" />
     </div>
+
     <input type="text" id="code-input" maxlength="4" placeholder="4 cifras" />
     <div id="error-message" class="error-message">Prueba otra cosa</div>
     <button class="btn" onclick="checkCode()">Comprobar</button>
+
     <button id="next-button" class="btn hidden next-button" onclick="goToNext()">Siguiente prueba</button>
   </div>
 
-  <!-- PUZZLE 2 -->
+  <!-- Segunda prueba -->
   <div id="puzzle2-screen" class="hidden">
     <h2>Venga el segundo</h2>
+
     <div class="color-buttons">
       <button class="color-btn color-red" onclick="setBgColor('red')">rojo</button>
       <button class="color-btn color-green" onclick="setBgColor('green')">verde</button>
@@ -140,39 +142,47 @@
       <button class="color-btn color-magenta" onclick="setBgColor('magenta')">magenta</button>
       <button class="color-btn color-cyan" onclick="setBgColor('cyan')">cian</button>
     </div>
+
     <div class="image-container" id="image-container-2">
       <img src="Puzzle_2.png" alt="Imagen del segundo puzle" class="blend-img" />
     </div>
+
     <input type="text" id="code-input-2" maxlength="4" placeholder="4 cifras" />
     <div id="error-message-2" class="error-message">Prueba otra cosa</div>
     <button class="btn" onclick="checkCode2()">Comprobar</button>
+
     <button id="next-button-2" class="btn hidden next-button" onclick="goToNext2()">Siguiente prueba</button>
   </div>
 
-  <!-- PUZZLE 3 -->
+  <!-- Tercera prueba -->
   <div id="puzzle3-screen" class="hidden">
     <h2>3er puzle</h2>
-    <p>este el ultimo</p>
+    <p>Aquí otro puzle más buaaaaaa</p>
+
     <div class="color-buttons">
       <button class="color-btn color-yellow" onclick="setBgColor('yellow')">amarillo</button>
       <button class="color-btn color-magenta" onclick="setBgColor('magenta')">magenta</button>
     </div>
+
     <div class="image-container" id="image-container-3">
       <img src="Puzzle_3.png" alt="Imagen del tercer puzle" class="blend-img" />
     </div>
+
     <input type="text" id="code-input-3" maxlength="4" placeholder="4 cifras" />
     <div id="error-message-3" class="error-message">Prueba otra cosa</div>
     <button class="btn" onclick="checkCode3()">Comprobar</button>
+
     <button id="next-button-3" class="btn hidden next-button" onclick="goToNext3()">Siguiente prueba</button>
   </div>
 
-  <!-- PUZZLE 4 -->
-  <div id="puzzle4-screen" class="hidden">
-    <h2>4to puzle</h2>
-    <p>Me estoy quedando sin numeros diooooosss</p>
+  <!-- Pantalla final -->
+  <div id="final-screen" class="hidden">
+    <h2>¡Enhorabuena!</h2>
+    <p>Has conseguido completar la primera parte del puzle. Ahora a por lo siguiente...</p>
+    <!-- Cambia este texto a tu gusto -->
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- Lógica -->
   <script>
     function startPuzzle() {
       document.getElementById("intro-screen").classList.add("hidden");
@@ -267,8 +277,9 @@
 
     function goToNext3() {
       document.getElementById("puzzle3-screen").classList.add("hidden");
-      document.getElementById("puzzle4-screen").classList.remove("hidden");
+      document.getElementById("final-screen").classList.remove("hidden");
     }
   </script>
+
 </body>
 </html>
