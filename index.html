@@ -73,7 +73,7 @@
       max-height: 100%;
     }
 
-    #code-input {
+    input[type="text"] {
       padding: 10px;
       font-size: 16px;
       border: 2px solid white;
@@ -83,14 +83,14 @@
       width: 100px;
     }
 
-    #error-message {
+    .error-message {
       color: red;
       font-size: 14px;
       margin-bottom: 10px;
       display: none;
     }
 
-    #next-button {
+    .next-button {
       margin-top: 15px;
     }
   </style>
@@ -101,7 +101,7 @@
   <div id="intro-screen">
     <h1>ehhh hola.</h1>
     <p>Equipo rojo, no?. Te tengo listos unos puzles recien salidos del horno que me dan hasta hambre</p>
-        <p>Nada de trampas eh? bueno si las haces dime cooomo</p>
+    <p>Nada de trampas eh? bueno si las haces dime cooomo</p>
     <button class="btn" onclick="startPuzzle()">Comenzar</button>
   </div>
 
@@ -119,47 +119,44 @@
     </div>
 
     <div id="image-container">
-      <!-- Sustituye esta imagen por la tuya -->
-     <img id="puzzle-image" src="Puzzle_1.png" alt="Imagen del primer puzle" />
+      <img id="puzzle-image" src="Puzzle_1.png" alt="Imagen del primer puzle" />
     </div>
 
     <input type="text" id="code-input" maxlength="4" placeholder="4 cifras" />
-    <div id="error-message">Prueba otra cosa</div>
+    <div id="error-message" class="error-message">Prueba otra cosa</div>
     <button class="btn" onclick="checkCode()">Comprobar</button>
 
-    <button id="next-button" class="btn hidden" onclick="goToNext()">Siguiente prueba</button>
+    <button id="next-button" class="btn hidden next-button" onclick="goToNext()">Siguiente prueba</button>
   </div>
 
   <!-- Segunda prueba -->
-<div id="puzzle2-screen" class="hidden">
-  <h2>Venga el segundo</h2>
+  <div id="puzzle2-screen" class="hidden">
+    <h2>Venga el segundo</h2>
 
-  <div class="color-buttons">
-    <button class="color-btn color-red" onclick="setBgColor('red')">rojo</button>
-    <button class="color-btn color-green" onclick="setBgColor('green')">verde</button>
-    <button class="color-btn color-blue" onclick="setBgColor('blue')">asuuul</button>
-    <button class="color-btn color-yellow" onclick="setBgColor('yellow')">amarillo</button>
-    <button class="color-btn color-magenta" onclick="setBgColor('magenta')">magenta</button>
-    <button class="color-btn color-cyan" onclick="setBgColor('cyan')">cian</button>
+    <div class="color-buttons">
+      <button class="color-btn color-red" onclick="setBgColor('red')">rojo</button>
+      <button class="color-btn color-green" onclick="setBgColor('green')">verde</button>
+      <button class="color-btn color-blue" onclick="setBgColor('blue')">asuuul</button>
+      <button class="color-btn color-yellow" onclick="setBgColor('yellow')">amarillo</button>
+      <button class="color-btn color-magenta" onclick="setBgColor('magenta')">magenta</button>
+      <button class="color-btn color-cyan" onclick="setBgColor('cyan')">cian</button>
+    </div>
+
+    <div id="image-container">
+      <img id="puzzle-image" src="Puzzle_2.png" alt="Imagen del segundo puzle" />
+    </div>
+
+    <input type="text" id="code-input-2" maxlength="4" placeholder="4 cifras" />
+    <div id="error-message-2" class="error-message">Prueba otra cosa</div>
+    <button class="btn" onclick="checkCode2()">Comprobar</button>
+
+    <button id="next-button-2" class="btn hidden next-button" onclick="goToNext2()">Siguiente prueba</button>
   </div>
-
-  <div id="image-container">
-    <img id="puzzle-image" src="Puzzle_2.png" alt="Imagen del segundo puzle" />
-  </div>
-
-  <input type="text" id="code-input-2" maxlength="4" placeholder="4 cifras" />
-  <div id="error-message-2" style="color: red; display: none;">Prueba otra cosa</div>
-  <button class="btn" onclick="checkCode2()">Comprobar</button>
-
-  <button id="next-button-2" class="btn hidden" onclick="goToNext2()">Siguiente prueba</button>
-</div>
-
 
   <!-- Tercera prueba (vacía de momento) -->
   <div id="puzzle3-screen" class="hidden">
     <h2>3er puzle</h2>
     <p>Aquí otro puzle mas buaaaaaa</p>
-
   </div> 
   
   <!-- cuarta prueba (vacía de momento) -->
@@ -168,13 +165,14 @@
     <p>Me estoy quedando sin numeros diooooosss</p>
   </div>
 
+  <!-- Lógica -->
   <script>
     function startPuzzle() {
       document.getElementById("intro-screen").classList.add("hidden");
       document.getElementById("puzzle1-screen").classList.remove("hidden");
     }
 
-     function setBgColor(color) {
+    function setBgColor(color) {
       const colors = {
         red: 'rgb(255,0,0)',
         green: 'rgb(0,255,0)',
@@ -182,19 +180,36 @@
         yellow: 'rgb(255,255,0)',
         magenta: 'rgb(255,0,255)',
         cyan: 'rgb(0,255,255)'
-       };
+      };
       document.getElementById("image-container").style.backgroundColor = colors[color];
     }
-
 
     function checkCode() {
       const input = document.getElementById("code-input");
       const error = document.getElementById("error-message");
       const nextButton = document.getElementById("next-button");
+      const correctCode = "2705"; // Código correcto del primer puzle
 
-      const correctCode = "2705"; // <-- CAMBIA este valor por el código real
+      if (input.value === correctCode) {
+        input.style.borderColor = "limegreen";
+        error.style.display = "none";
+        nextButton.classList.remove("hidden");
+        nextButton.style.border = "2px solid limegreen";
+      } else {
+        input.style.borderColor = "red";
+        error.style.display = "block";
+        nextButton.classList.add("hidden");
+        nextButton.style.border = "none";
+      }
+    }
 
-        if (input.value === correctCode) {
+    function checkCode2() {
+      const input = document.getElementById("code-input-2");
+      const error = document.getElementById("error-message-2");
+      const nextButton = document.getElementById("next-button-2");
+      const correctCode = "5831"; // Código correcto del segundo puzle
+
+      if (input.value === correctCode) {
         input.style.borderColor = "limegreen";
         error.style.display = "none";
         nextButton.classList.remove("hidden");
@@ -210,7 +225,12 @@
     function goToNext() {
       document.getElementById("puzzle1-screen").classList.add("hidden");
       document.getElementById("puzzle2-screen").classList.remove("hidden");
-   }
+    }
+
+    function goToNext2() {
+      document.getElementById("puzzle2-screen").classList.add("hidden");
+      document.getElementById("puzzle3-screen").classList.remove("hidden");
+    }
 
     function goBack() {
       if (!document.getElementById("puzzle2-screen").classList.contains("hidden")) {
