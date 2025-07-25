@@ -68,9 +68,10 @@
       border: 2px solid white;
     }
 
-    .image-container img {
+    .blend-img {
       max-width: 100%;
       max-height: 100%;
+      mix-blend-mode: multiply;
     }
 
     input[type="text"] {
@@ -97,7 +98,7 @@
 </head>
 <body>
 
-  <!-- Introducción -->
+  <!-- Pantalla de introducción -->
   <div id="intro-screen">
     <h1>ehhh hola.</h1>
     <p>Equipo rojo, no?. Te tengo listos unos puzles recien salidos del horno que me dan hasta hambre</p>
@@ -105,7 +106,7 @@
     <button class="btn" onclick="startPuzzle()">Comenzar</button>
   </div>
 
-  <!-- Puzzle 1 -->
+  <!-- Primera prueba -->
   <div id="puzzle1-screen" class="hidden">
     <h2>Dadle al cerebrooo</h2>
 
@@ -118,17 +119,18 @@
       <button class="color-btn color-cyan" onclick="setBgColor('cyan')">esto</button>
     </div>
 
-    <div class="image-container">
-      <img src="Puzzle_1.png" alt="Imagen del primer puzle" />
+    <div class="image-container" id="image-container-1">
+      <img src="Puzzle_1.png" alt="Imagen del primer puzle" class="blend-img" />
     </div>
 
     <input type="text" id="code-input" maxlength="4" placeholder="4 cifras" />
     <div id="error-message" class="error-message">Prueba otra cosa</div>
     <button class="btn" onclick="checkCode()">Comprobar</button>
+
     <button id="next-button" class="btn hidden next-button" onclick="goToNext()">Siguiente prueba</button>
   </div>
 
-  <!-- Puzzle 2 -->
+  <!-- Segunda prueba -->
   <div id="puzzle2-screen" class="hidden">
     <h2>Venga el segundo</h2>
 
@@ -141,28 +143,30 @@
       <button class="color-btn color-cyan" onclick="setBgColor('cyan')">cian</button>
     </div>
 
-    <div class="image-container">
-      <img src="Puzzle_2.png" alt="Imagen del segundo puzle" />
+    <div class="image-container" id="image-container-2">
+      <img src="Puzzle_2.png" alt="Imagen del segundo puzle" class="blend-img" />
     </div>
 
     <input type="text" id="code-input-2" maxlength="4" placeholder="4 cifras" />
     <div id="error-message-2" class="error-message">Prueba otra cosa</div>
     <button class="btn" onclick="checkCode2()">Comprobar</button>
+
     <button id="next-button-2" class="btn hidden next-button" onclick="goToNext2()">Siguiente prueba</button>
   </div>
 
-  <!-- Puzzle 3 -->
+  <!-- Tercera prueba (vacía de momento) -->
   <div id="puzzle3-screen" class="hidden">
     <h2>3er puzle</h2>
     <p>Aquí otro puzle mas buaaaaaa</p>
-  </div> 
+  </div>
 
-  <!-- Puzzle 4 -->
+  <!-- cuarta prueba (vacía de momento) -->
   <div id="puzzle4-screen" class="hidden">
     <h2>4to puzle</h2>
     <p>Me estoy quedando sin numeros diooooosss</p>
   </div>
 
+  <!-- Lógica -->
   <script>
     function startPuzzle() {
       document.getElementById("intro-screen").classList.add("hidden");
@@ -180,9 +184,9 @@
       };
 
       if (!document.getElementById("puzzle1-screen").classList.contains("hidden")) {
-        document.querySelector("#puzzle1-screen .image-container").style.backgroundColor = colors[color];
+        document.getElementById("image-container-1").style.backgroundColor = colors[color];
       } else if (!document.getElementById("puzzle2-screen").classList.contains("hidden")) {
-        document.querySelector("#puzzle2-screen .image-container").style.backgroundColor = colors[color];
+        document.getElementById("image-container-2").style.backgroundColor = colors[color];
       }
     }
 
