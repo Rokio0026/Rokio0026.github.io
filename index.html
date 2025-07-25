@@ -1,3 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Puzzle Intro</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .btn {
+      background-color: #444;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background-color: #666;
+    }
+
+    .color-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .color-btn {
+      margin: 5px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .color-red { background-color: red; }
+    .color-green { background-color: rgb(0, 255, 0); color: black; }
+    .color-blue { background-color: blue; }
+    .color-yellow { background-color: yellow; color: black; }
+    .color-magenta { background-color: magenta; }
+    .color-cyan { background-color: cyan; color: black; }
+
+    .image-container {
+      width: 300px;
+      height: 300px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: black;
+      border: 2px solid white;
+    }
+
+    .blend-img {
+      max-width: 100%;
+      max-height: 100%;
+      mix-blend-mode: multiply;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid white;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      text-align: center;
+      width: 100px;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .next-button {
+      margin-top: 15px;
+    }
+  </style>
+</head>
 <!-- El mismo <head> y <style> que tú tenías, sin cambios importantes -->
 <!-- Aquí va directamente el <body> corregido -->
 
