@@ -158,6 +158,22 @@
   <div id="puzzle3-screen" class="hidden">
     <h2>3er puzle</h2>
     <p>Aquí otro puzle mas buaaaaaa</p>
+
+     <div class="color-buttons">
+      <button class="color-btn color-yellow" onclick="setBgColor('yellow')">amarillo</button>
+      <button class="color-btn color-magenta" onclick="setBgColor('magenta')">magenta</button>
+     
+    </div>
+
+    <div class="image-container" id="image-container-3">
+      <img src="Puzzle_3.png" alt="Imagen del tercer puzle" class="blend-img" />
+
+    <input type="text" id="code-input-2" maxlength="4" placeholder="4 cifras" />
+    <div id="error-message-3" class="error-message">Prueba otra cosa</div>
+    <button class="btn" onclick="checkCode2()">Comprobar</button>
+
+    <button id="next-button-3" class="btn hidden next-button" onclick="goToNext3()">Siguiente prueba</button>
+  </div>
   </div>
 
   <!-- cuarta prueba (vacía de momento) -->
@@ -188,6 +204,7 @@
       } else if (!document.getElementById("puzzle2-screen").classList.contains("hidden")) {
         document.getElementById("image-container-2").style.backgroundColor = colors[color];
       }
+      
     }
 
     function checkCode() {
@@ -214,6 +231,25 @@
       const error = document.getElementById("error-message-2");
       const nextButton = document.getElementById("next-button-2");
       const correctCode = "8623";
+
+      if (input.value === correctCode) {
+        input.style.borderColor = "limegreen";
+        error.style.display = "none";
+        nextButton.classList.remove("hidden");
+        nextButton.style.border = "2px solid limegreen";
+      } else {
+        input.style.borderColor = "red";
+        error.style.display = "block";
+        nextButton.classList.add("hidden");
+        nextButton.style.border = "none";
+      }
+    }
+
+        function checkCode3() {
+      const input = document.getElementById("code-input-3");
+      const error = document.getElementById("error-message-3");
+      const nextButton = document.getElementById("next-button-3");
+      const correctCode = "3015";
 
       if (input.value === correctCode) {
         input.style.borderColor = "limegreen";
