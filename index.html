@@ -130,11 +130,30 @@
     <button id="next-button" class="btn hidden" onclick="goToNext()">Siguiente prueba</button>
   </div>
 
-  <!-- Segunda prueba (vacía de momento) -->
-  <div id="puzzle2-screen" class="hidden">
-    <h2>2ndo puzle</h2>
-    <p>Aquí el siguiente puzle pesao</p>
+  <!-- Segunda prueba -->
+<div id="puzzle2-screen" class="hidden">
+  <h2>Venga el segundo</h2>
+
+  <div class="color-buttons">
+    <button class="color-btn color-red" onclick="setBgColor('red')">rojo</button>
+    <button class="color-btn color-green" onclick="setBgColor('green')">verde</button>
+    <button class="color-btn color-blue" onclick="setBgColor('blue')">asuuul</button>
+    <button class="color-btn color-yellow" onclick="setBgColor('yellow')">amarillo</button>
+    <button class="color-btn color-magenta" onclick="setBgColor('magenta')">magenta</button>
+    <button class="color-btn color-cyan" onclick="setBgColor('cyan')">cian</button>
   </div>
+
+  <div id="image-container">
+    <img id="puzzle-image" src="Puzzle_2.png" alt="Imagen del segundo puzle" />
+  </div>
+
+  <input type="text" id="code-input-2" maxlength="4" placeholder="4 cifras" />
+  <div id="error-message-2" style="color: red; display: none;">Prueba otra cosa</div>
+  <button class="btn" onclick="checkCode2()">Comprobar</button>
+
+  <button id="next-button-2" class="btn hidden" onclick="goToNext2()">Siguiente prueba</button>
+</div>
+
 
   <!-- Tercera prueba (vacía de momento) -->
   <div id="puzzle3-screen" class="hidden">
